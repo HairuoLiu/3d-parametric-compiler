@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Model Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Parametric Generator</h1>
+
+<div class="grid">
+  <div class="card" onclick="go('lens1.scad')">
+    <img src="https://via.placeholder.com/200">
+    <p>Lens 1</p>
+  </div>
+
+  <div class="card" onclick="go('lens2.scad')">
+    <img src="https://via.placeholder.com/200">
+    <p>Lens 2</p>
+  </div>
+
+  <div class="card" onclick="go('lens3.scad')">
+    <img src="https://via.placeholder.com/200">
+    <p>Lens 3</p>
+  </div>
+
+  <div class="card" onclick="go('lens4.scad')">
+    <img src="https://via.placeholder.com/200">
+    <p>Lens 4</p>
+  </div>
+</div>
+
+<script>
+function go(file){
+  window.location = "generator.html?file=" + file;
+}
+</script>
+
+</body>
+</html>

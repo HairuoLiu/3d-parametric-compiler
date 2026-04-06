@@ -9,6 +9,17 @@ async function init() {
   const scadText = await loadScad();
   currentParams = extractParams(scadText);
 
+  // ✅ fallback 防止空参数
+  if (Object.keys(currentParams).length === 0) {
+    currentParams = {
+      diameter: 60,
+      inner_diameter: 45,
+      thickness: 10
+    };
+  }
+
+  console.log("params:", currentParams);
+
   generateUI(currentParams);
   renderModel(currentParams);
 }
@@ -68,35 +79,62 @@ function generateUI(params) {
 function renderModel(params) {
   if (mesh) scene.remove(mesh);
 
-  const outer = new THREE.CylinderGeometry(
-    params.diameter / 2,
-    params.diameter / 2,
-    params.thickness,
+  const diameter = Math.max(1, params.diameter || 60);
+  const inner_diameter = Math.max(1, params.inner_diameter || 40);
+  const thickness = Math.max(1, params.thickness || 10);
+
+  const outerGeo = new THREE.CylinderGeometry(
+    diameter / 2,
+    diameter / 2,
+    thickness,
     64
   );
 
-  const inner = new THREE.CylinderGeometry(
-    params.inner_diameter / 2,
-    params.inner_diameter / 2,
-    params.thickness + 2,
+  const innerGeo = new THREE.CylinderGeometry(
+    inner_diameter / 2,
+    inner_diameter / 2,
+    thickness + 2,
     64
   );
 
-  // 简化版：用缩放模拟空心（避免CSG复杂度）
-  const material = new THREE.MeshNormalMaterial({ wireframe: false });
+  const material = new THREE.MeshNormalMaterial();
 
-  const outerMesh = new THREE.Mesh(outer, material);
-  const innerMesh = new THREE.Mesh(inner, material);
+  const outerMesh = new THREE.Mesh(outerGeo, material);
+  const innerMesh = new THREE.Mesh(innerGeo, material);
 
   innerMesh.scale.set(0.95, 1, 0.95);
 
-  scene.add(outerMesh);
-  scene.add(innerMesh);
+  // 👉 用 Group 管理（导出更干净）
+  mesh = new THREE.Group();
+  mesh.add(outerMesh);
+  mesh.add(innerMesh);
 
-  mesh = outerMesh;
+  scene.add(mesh);
 }
 
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
+}
+
+function downloadSTL() {
+  if (!mesh) {
+    alert("No model to export");
+    return;
+  }
+
+  const exporter = new THREE.STLExporter();
+
+  // ⚠️ 导出整个 scene（更安全）
+  const result = exporter.parse(scene);
+
+  const blob = new Blob([result], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "lens_adapter.stl";
+  link.click();
+
+  URL.revokeObjectURL(url);
 }
