@@ -1,5 +1,5 @@
 async function loadScad() {
-  const res = await fetch("./templates/lens_adapter.scad");
+  const res = await fetch("./templates/index.json");
   return await res.text();
 }
 
