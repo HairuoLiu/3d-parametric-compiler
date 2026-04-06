@@ -1,0 +1,18 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+.panel {
+  margin-bottom: 20px;
+}
+
+input {
+  margin: 5px;
+}
+
+#viewer {
+  width: 600px;
+  height: 400px;
+  border: 1px solid #ccc;
+}

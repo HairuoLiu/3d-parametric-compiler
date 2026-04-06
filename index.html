@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parametric Model Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Parametric Lens Adapter Generator</h1>
+
+  <div class="panel">
+    <label>Diameter (mm):</label>
+    <input id="diameter" type="number" value="52" />
+
+    <label>Thickness (mm):</label>
+    <input id="thickness" type="number" value="5" />
+
+    <button onclick="generate()">Generate</button>
+  </div>
+
+  <div id="viewer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158/examples/js/controls/OrbitControls.js"></script>
+  <script src="compiler.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
