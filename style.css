@@ -3,12 +3,13 @@ body {
   padding: 20px;
 }
 
-.panel {
-  margin-bottom: 20px;
+.container {
+  display: flex;
+  gap: 20px;
 }
 
-input {
-  margin: 5px;
+.panel {
+  width: 200px;
 }
 
 #viewer {
